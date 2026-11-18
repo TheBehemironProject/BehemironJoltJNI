@@ -118,7 +118,8 @@ jobs:
       - name: Build Android AAR
         run: |
           cp android.gradle build.gradle
-          ./gradlew -Partifact=behemiron-jolt-jni-Android -Pflavor=Sp assembleRelease --console=plain
+          ./gradlew -Partifact=behemiron-jolt-jni-Android -Pflavor=Sp \
+            -Pabis=arm64-v8a,armeabi-v7a assembleRelease --console=plain
         shell: bash
       - name: Repackage per-ABI runtime natives jars
         # FCL/Pojav run the full Java Edition JVM on Android, so the consumer of these is a

@@ -58,7 +58,10 @@ android {
         }
         minSdk = 33 // to use java.lang.ref.Cleaner
         ndk {
-            if (!project.hasProperty('target')) {
+            if (project.hasProperty('abis')) {
+                // fork: comma-separated ABI subset, e.g. -Pabis=arm64-v8a,armeabi-v7a
+                abiFilters(*abis.split(','))
+            } else if (!project.hasProperty('target')) {
                 abiFilters 'arm64-v8a', 'armeabi-v7a', 'riscv64', 'x86', 'x86_64'
             } else if (target == 'Android_ARM7') {
                 abiFilters 'armeabi-v7a'
