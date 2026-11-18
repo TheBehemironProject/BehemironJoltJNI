@@ -18,6 +18,8 @@ Harness: `src/test/java/testjoltjni/app/behemiron/BoundaryProfiler.java`
 | read, batch matrices (`getCenterOfComTransforms`) | 25–31 | 0.05–0.06 | 0.1 % |
 | write, per-body (`setPositionAndRotation`) | 123–152 | 0.25–0.30 | 0.5–0.6 % |
 | write, batch positions only (`setPositions`) | 62–72 | 0.12–0.14 | 0.2–0.3 % |
+| **read, batch pos+rot (new combined API)** | **36.3** | **0.07** | **0.1 %** |
+| **write, batch pos+rot (new combined API)** | **63.1** | **0.13** | **0.3 %** |
 | step, kinematic world (empty solver work) | 0.7–0.8 | ~0 | ~0 % |
 
 Reading of the numbers:
@@ -39,11 +41,14 @@ Reading of the numbers:
 
 1. `getPositionsAndRotations(ConstBodyIdArray ids, DoubleBuffer positions,
    FloatBuffer rotations)` — halves the read path's crossings versus the existing
-   two-call pair. Target: ≤35 ns/body (same league as `getCenterOfComTransforms`).
+   two-call pair. Measured after implementation: **36.3 ns/body** (6.1× faster than
+   per-body reads).
 2. `setPositionsAndRotations(ConstBodyIdArray ids, DoubleBuffer positions,
    FloatBuffer rotations, EActivation activation)` — the missing rotation batch and
    the paired write. Upstream has `setPositions` only; kinematic drive needs both
-   halves atomically. Target: ≤80 ns/body.
+   halves atomically. Measured after implementation: **63.1 ns/body** (2.0× faster
+   than per-body `setPositionAndRotation`; rotations ride along nearly free versus
+   the positions-only batch at 61.1 ns).
 
 Both follow the existing batch conventions: `ConstBodyIdArray` + direct buffers +
 `EActivation` on the setter; native loops mirror `getPositions`/`setPositions`.
