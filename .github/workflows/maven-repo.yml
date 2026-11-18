@@ -7,7 +7,9 @@
 #
 # Platform jobs build the upstream Gradle targets and upload the natives jar; the deploy job
 # re-stages them under OUR classifier convention (windows-x86_64 / linux-x86_64 /
-# macosx-x86_64 / macosx-arm64), which differs from upstream's ReleaseSp-style classifiers.
+# macosx-x86_64 / macosx-arm64 / android), which differs from upstream's ReleaseSp-style
+# classifiers. The android job drives upstream's android.gradle (AGP + ndk-build) and
+# stages the multi-ABI AAR as classifier `android` (packaging aar).
 
 name: Publish maven-repo
 on:
@@ -92,8 +94,36 @@ jobs:
           path: build/libs/*-ReleaseSp.jar
           if-no-files-found: error
 
+  android:
+    # Upstream's Android build is a separate Gradle script (android.gradle) driving AGP +
+    # ndk-build (Android.mk). It produces a multi-ABI AAR; we stage it as classifier `android`.
+    # The NDK pin comes from gradle/libs.versions.toml (android-ndk).
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - uses: actions/checkout@v7
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Install pinned Android NDK
+        run: |
+          set -euo pipefail
+          sdk_root="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+          sdkmanager="$(find "$sdk_root/cmdline-tools" -name sdkmanager -type f | head -n 1)"
+          yes | "$sdkmanager" --install "ndk;30.0.16248370" >/dev/null
+        shell: bash
+      - name: Build Android AAR
+        run: ./gradlew -b android.gradle -Partifact=behemiron-jolt-jni-Android assembleRelease --console=plain
+        shell: bash
+      - uses: actions/upload-artifact@v4
+        with:
+          name: maven-android
+          path: build/outputs/aar/*.aar
+          if-no-files-found: error
+
   deploy-maven-repo:
-    needs: [base, windows-x86_64, macosx-x86_64, macosx-arm64]
+    needs: [base, windows-x86_64, macosx-x86_64, macosx-arm64, android]
     if: ${{ github.event_name == 'push' || github.event_name == 'release' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions:
@@ -167,6 +197,15 @@ jobs:
           linux_jar="$(find prebuilt-artifacts -path '*maven-base*' -name '*-ReleaseSp.jar' | head -n 1)"
           mvn "${deploy_file_args[@]}" -Dfile="$linux_jar" -Dclassifier=linux-x86_64
 
+          # Android: multi-ABI AAR from the android job (classifier `android`, packaging aar).
+          aar="$(find prebuilt-artifacts -path '*maven-android*' -name '*.aar' | head -n 1)"
+          if [[ ! -f "$aar" ]]; then
+            echo "Android AAR not found"
+            find prebuilt-artifacts -type f | sort
+            exit 1
+          fi
+          mvn "${deploy_file_args[@]}" -Dfile="$aar" -Dclassifier=android -Dpackaging=aar
+
           echo "Staged Maven repository layout:"
           (cd "$repo_out" && find . -type f | sort)
 
@@ -198,7 +237,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release upload "${{ github.event.release.tag_name }}" \
-            prebuilt-artifacts/**/*.jar \
-            --repo "${{ github.repository }}" \
-            --clobber
+          find prebuilt-artifacts -type f \( -name '*.jar' -o -name '*.aar' \) -exec \
+            gh release upload "${{ github.event.release.tag_name }}" {} \
+              --repo "${{ github.repository }}" \
+              --clobber \;
