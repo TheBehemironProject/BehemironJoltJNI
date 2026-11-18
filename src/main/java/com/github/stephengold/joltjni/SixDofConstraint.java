@@ -426,6 +426,41 @@ public class SixDofConstraint extends TwoBodyConstraint {
      * @param dof which DOF to alter (not {@code null})
      * @param springSettings the desired settings (not {@code null}, unaffected)
      */
+    // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Copy the total lambda of the Position part. The constraint is unaffected.
+     *
+     * @return a new vector
+     */
+    public Vec3 getTotalLambdaPosition() {
+        long constraintVa = va();
+        float x = getTotalLambdaPositionX(constraintVa);
+        float y = getTotalLambdaPositionY(constraintVa);
+        float z = getTotalLambdaPositionZ(constraintVa);
+        Vec3 result = new Vec3(x, y, z);
+
+        return result;
+    }
+
+    // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Copy the total lambda of the Rotation part. The constraint is unaffected.
+     *
+     * @return a new vector
+     */
+    public Vec3 getTotalLambdaRotation() {
+        long constraintVa = va();
+        float x = getTotalLambdaRotationX(constraintVa);
+        float y = getTotalLambdaRotationY(constraintVa);
+        float z = getTotalLambdaRotationZ(constraintVa);
+        Vec3 result = new Vec3(x, y, z);
+
+        return result;
+    }
     public void setLimitsSpringSettings(
             EAxis dof, ConstSpringSettings springSettings) {
         long constraintVa = va();
@@ -721,6 +756,21 @@ public class SixDofConstraint extends TwoBodyConstraint {
     native private static boolean isFixedAxis(long constraintVa, int dofIndex);
 
     native private static boolean isFreeAxis(long constraintVa, int dofIndex);
+
+    // *************************************************************************
+    // native private methods
+
+    native private static float getTotalLambdaPositionX(long constraintVa);
+
+    native private static float getTotalLambdaPositionY(long constraintVa);
+
+    native private static float getTotalLambdaPositionZ(long constraintVa);
+
+    native private static float getTotalLambdaRotationX(long constraintVa);
+
+    native private static float getTotalLambdaRotationY(long constraintVa);
+
+    native private static float getTotalLambdaRotationZ(long constraintVa);
 
     native private static void setLimitsSpringSettings(
             long constraintVa, int dofIndex, long springSettingsVa);

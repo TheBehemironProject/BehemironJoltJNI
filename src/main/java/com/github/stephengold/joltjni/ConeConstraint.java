@@ -60,6 +60,38 @@ public class ConeConstraint extends TwoBodyConstraint {
      *
      * @param halfAngle the desired half angle (in radians)
      */
+    // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Copy the total lambda of the Position part. The constraint is unaffected.
+     *
+     * @return a new vector
+     */
+    public Vec3 getTotalLambdaPosition() {
+        long constraintVa = va();
+        float x = getTotalLambdaPositionX(constraintVa);
+        float y = getTotalLambdaPositionY(constraintVa);
+        float z = getTotalLambdaPositionZ(constraintVa);
+        Vec3 result = new Vec3(x, y, z);
+
+        return result;
+    }
+
+    // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Return the total lambda of the Rotation part. The constraint is unaffected.
+     *
+     * @return the total lambda
+     */
+    public float getTotalLambdaRotation() {
+        long constraintVa = va();
+        float result = getTotalLambdaRotation(constraintVa);
+
+        return result;
+    }
     public void setHalfConeAngle(float halfAngle) {
         long constraintVa = va();
         setHalfConeAngle(constraintVa, halfAngle);
@@ -68,6 +100,17 @@ public class ConeConstraint extends TwoBodyConstraint {
     // native private methods
 
     native private static float getCosHalfConeAngle(long constraintVa);
+
+    // *************************************************************************
+    // native private methods
+
+    native private static float getTotalLambdaPositionX(long constraintVa);
+
+    native private static float getTotalLambdaPositionY(long constraintVa);
+
+    native private static float getTotalLambdaPositionZ(long constraintVa);
+
+    native private static float getTotalLambdaRotation(long constraintVa);
 
     native private static void setHalfConeAngle(
             long constraintVa, float halfAngle);

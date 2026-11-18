@@ -228,3 +228,81 @@ JNIEXPORT void JNICALL Java_com_github_stephengold_joltjni_SwingTwistConstraint_
     const Quat orientation(qx, qy, qz, qw);
     pConstraint->SetTargetOrientationCS(orientation);
 }
+
+/*
+ * Class:     com_github_stephengold_joltjni_SwingTwistConstraint
+ * Method:    getTotalLambdaPositionX
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SwingTwistConstraint_getTotalLambdaPositionX
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SwingTwistConstraint * const pConstraint
+            = reinterpret_cast<SwingTwistConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPosition().GetX();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_SwingTwistConstraint
+ * Method:    getTotalLambdaPositionY
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SwingTwistConstraint_getTotalLambdaPositionY
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SwingTwistConstraint * const pConstraint
+            = reinterpret_cast<SwingTwistConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPosition().GetY();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_SwingTwistConstraint
+ * Method:    getTotalLambdaPositionZ
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SwingTwistConstraint_getTotalLambdaPositionZ
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SwingTwistConstraint * const pConstraint
+            = reinterpret_cast<SwingTwistConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPosition().GetZ();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_SwingTwistConstraint
+ * Method:    getTotalLambdaTwist
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SwingTwistConstraint_getTotalLambdaTwist
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SwingTwistConstraint * const pConstraint
+            = reinterpret_cast<SwingTwistConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaTwist();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_SwingTwistConstraint
+ * Method:    getTotalLambdaSwingY
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SwingTwistConstraint_getTotalLambdaSwingY
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SwingTwistConstraint * const pConstraint
+            = reinterpret_cast<SwingTwistConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaSwingY();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_SwingTwistConstraint
+ * Method:    getTotalLambdaSwingZ
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SwingTwistConstraint_getTotalLambdaSwingZ
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SwingTwistConstraint * const pConstraint
+            = reinterpret_cast<SwingTwistConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaSwingZ();
+    return result;
+}

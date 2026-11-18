@@ -219,3 +219,81 @@ JNIEXPORT void JNICALL Java_com_github_stephengold_joltjni_HingeConstraint_setTa
             = reinterpret_cast<HingeConstraint *> (constraintVa);
     pConstraint->SetTargetAngularVelocity(omega);
 }
+
+/*
+ * Class:     com_github_stephengold_joltjni_HingeConstraint
+ * Method:    getTotalLambdaPositionX
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_HingeConstraint_getTotalLambdaPositionX
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const HingeConstraint * const pConstraint
+            = reinterpret_cast<HingeConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPosition().GetX();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_HingeConstraint
+ * Method:    getTotalLambdaPositionY
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_HingeConstraint_getTotalLambdaPositionY
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const HingeConstraint * const pConstraint
+            = reinterpret_cast<HingeConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPosition().GetY();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_HingeConstraint
+ * Method:    getTotalLambdaPositionZ
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_HingeConstraint_getTotalLambdaPositionZ
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const HingeConstraint * const pConstraint
+            = reinterpret_cast<HingeConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPosition().GetZ();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_HingeConstraint
+ * Method:    getTotalLambdaRotationX
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_HingeConstraint_getTotalLambdaRotationX
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const HingeConstraint * const pConstraint
+            = reinterpret_cast<HingeConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaRotation()[0];
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_HingeConstraint
+ * Method:    getTotalLambdaRotationY
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_HingeConstraint_getTotalLambdaRotationY
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const HingeConstraint * const pConstraint
+            = reinterpret_cast<HingeConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaRotation()[1];
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_HingeConstraint
+ * Method:    getTotalLambdaRotationLimits
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_HingeConstraint_getTotalLambdaRotationLimits
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const HingeConstraint * const pConstraint
+            = reinterpret_cast<HingeConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaRotationLimits();
+    return result;
+}

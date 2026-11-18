@@ -158,6 +158,7 @@ $(N)/glue/e/EpaPenetrationDepth.cpp \
 $(N)/glue/e/ExtendedUpdateSettings.cpp \
 $(N)/glue/f/Face.cpp \
 $(N)/glue/f/FilteredContactListener.cpp \
+$(N)/glue/f/FixedConstraint.cpp \r
 $(N)/glue/f/FixedConstraintSettings.cpp \
 $(N)/glue/g/GearConstraint.cpp \
 $(N)/glue/g/GearConstraintSettings.cpp \
@@ -247,8 +248,10 @@ $(N)/glue/p/PathConstraintSettings.cpp \
 $(N)/glue/p/PathResult.cpp \
 $(N)/glue/p/PlaneShape.cpp \
 $(N)/glue/p/PlaneShapeSettings.cpp \
+$(N)/glue/p/PointConstraint.cpp \r
 $(N)/glue/p/PointConstraintSettings.cpp \
 $(N)/glue/p/PointConvexSupport.cpp \
+$(N)/glue/p/PulleyConstraint.cpp \r
 $(N)/glue/p/PulleyConstraintSettings.cpp \
 $(N)/glue/ra/RackAndPinionConstraint.cpp \
 $(N)/glue/ra/RackAndPinionConstraintSettings.cpp \

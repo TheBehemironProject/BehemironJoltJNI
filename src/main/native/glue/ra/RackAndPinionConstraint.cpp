@@ -43,3 +43,16 @@ JNIEXPORT void JNICALL Java_com_github_stephengold_joltjni_RackAndPinionConstrai
     const Constraint * const pRack = reinterpret_cast<Constraint *> (rackVa);
     pRAndP->SetConstraints(pPinion, pRack);
 }
+
+/*
+ * Class:     com_github_stephengold_joltjni_RackAndPinionConstraint
+ * Method:    getTotalLambda
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_RackAndPinionConstraint_getTotalLambda
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const RackAndPinionConstraint * const pConstraint
+            = reinterpret_cast<RackAndPinionConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambda();
+    return result;
+}

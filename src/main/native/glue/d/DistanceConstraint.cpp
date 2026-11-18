@@ -79,3 +79,16 @@ JNIEXPORT void JNICALL Java_com_github_stephengold_joltjni_DistanceConstraint_se
             = reinterpret_cast<DistanceConstraint *> (constraintVa);
     pConstraint->SetDistance(min, max);
 }
+
+/*
+ * Class:     com_github_stephengold_joltjni_DistanceConstraint
+ * Method:    getTotalLambdaPosition
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_DistanceConstraint_getTotalLambdaPosition
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const DistanceConstraint * const pConstraint
+            = reinterpret_cast<DistanceConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPosition();
+    return result;
+}

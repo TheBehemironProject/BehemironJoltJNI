@@ -176,6 +176,67 @@ public class SliderConstraint extends TwoBodyConstraint {
      * @param min the desired lower limit (in meters)
      * @param max the desired upper limit (in meters)
      */
+    // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Return the X component of the total lambda of the Position part.
+     * The constraint is unaffected.
+     *
+     * @return the X component
+     */
+    public float getTotalLambdaPositionX() {
+        long constraintVa = va();
+        float result = getTotalLambdaPositionX(constraintVa);
+
+        return result;
+    }
+
+    /**
+     * Return the Y component of the total lambda of the Position part.
+     * The constraint is unaffected.
+     *
+     * @return the Y component
+     */
+    public float getTotalLambdaPositionY() {
+        long constraintVa = va();
+        float result = getTotalLambdaPositionY(constraintVa);
+
+        return result;
+    }
+
+    // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Return the total lambda of the PositionLimits part. The constraint is unaffected.
+     *
+     * @return the total lambda
+     */
+    public float getTotalLambdaPositionLimits() {
+        long constraintVa = va();
+        float result = getTotalLambdaPositionLimits(constraintVa);
+
+        return result;
+    }
+
+    // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Copy the total lambda of the Rotation part. The constraint is unaffected.
+     *
+     * @return a new vector
+     */
+    public Vec3 getTotalLambdaRotation() {
+        long constraintVa = va();
+        float x = getTotalLambdaRotationX(constraintVa);
+        float y = getTotalLambdaRotationY(constraintVa);
+        float z = getTotalLambdaRotationZ(constraintVa);
+        Vec3 result = new Vec3(x, y, z);
+
+        return result;
+    }
     public void setLimits(float min, float max) {
         long constraintVa = va();
         setLimits(constraintVa, min, max);
@@ -243,6 +304,21 @@ public class SliderConstraint extends TwoBodyConstraint {
     native private static float getTargetVelocity(long constraintVa);
 
     native private static boolean hasLimits(long constraintVa);
+
+    // *************************************************************************
+    // native private methods
+
+    native private static float getTotalLambdaPositionX(long constraintVa);
+
+    native private static float getTotalLambdaPositionY(long constraintVa);
+
+    native private static float getTotalLambdaPositionLimits(long constraintVa);
+
+    native private static float getTotalLambdaRotationX(long constraintVa);
+
+    native private static float getTotalLambdaRotationY(long constraintVa);
+
+    native private static float getTotalLambdaRotationZ(long constraintVa);
 
     native private static void setLimits(
             long constraintVa, float min, float max);

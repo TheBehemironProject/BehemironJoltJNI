@@ -53,3 +53,55 @@ JNIEXPORT void JNICALL Java_com_github_stephengold_joltjni_ConeConstraint_setHal
             = reinterpret_cast<ConeConstraint *> (constraintVa);
     pConstraint->SetHalfConeAngle(angle);
 }
+
+/*
+ * Class:     com_github_stephengold_joltjni_ConeConstraint
+ * Method:    getTotalLambdaPositionX
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_ConeConstraint_getTotalLambdaPositionX
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const ConeConstraint * const pConstraint
+            = reinterpret_cast<ConeConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPosition().GetX();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_ConeConstraint
+ * Method:    getTotalLambdaPositionY
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_ConeConstraint_getTotalLambdaPositionY
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const ConeConstraint * const pConstraint
+            = reinterpret_cast<ConeConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPosition().GetY();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_ConeConstraint
+ * Method:    getTotalLambdaPositionZ
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_ConeConstraint_getTotalLambdaPositionZ
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const ConeConstraint * const pConstraint
+            = reinterpret_cast<ConeConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPosition().GetZ();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_ConeConstraint
+ * Method:    getTotalLambdaRotation
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_ConeConstraint_getTotalLambdaRotation
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const ConeConstraint * const pConstraint
+            = reinterpret_cast<ConeConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaRotation();
+    return result;
+}

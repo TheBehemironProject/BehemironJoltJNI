@@ -445,3 +445,81 @@ JNIEXPORT void JNICALL Java_com_github_stephengold_joltjni_SixDofConstraint_setT
     const Vec3 max(maxX, maxY, maxZ);
     pConstraint->SetTranslationLimits(min, max);
 }
+
+/*
+ * Class:     com_github_stephengold_joltjni_SixDofConstraint
+ * Method:    getTotalLambdaPositionX
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SixDofConstraint_getTotalLambdaPositionX
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SixDOFConstraint * const pConstraint
+            = reinterpret_cast<SixDOFConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPosition().GetX();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_SixDofConstraint
+ * Method:    getTotalLambdaPositionY
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SixDofConstraint_getTotalLambdaPositionY
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SixDOFConstraint * const pConstraint
+            = reinterpret_cast<SixDOFConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPosition().GetY();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_SixDofConstraint
+ * Method:    getTotalLambdaPositionZ
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SixDofConstraint_getTotalLambdaPositionZ
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SixDOFConstraint * const pConstraint
+            = reinterpret_cast<SixDOFConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPosition().GetZ();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_SixDofConstraint
+ * Method:    getTotalLambdaRotationX
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SixDofConstraint_getTotalLambdaRotationX
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SixDOFConstraint * const pConstraint
+            = reinterpret_cast<SixDOFConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaRotation().GetX();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_SixDofConstraint
+ * Method:    getTotalLambdaRotationY
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SixDofConstraint_getTotalLambdaRotationY
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SixDOFConstraint * const pConstraint
+            = reinterpret_cast<SixDOFConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaRotation().GetY();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_SixDofConstraint
+ * Method:    getTotalLambdaRotationZ
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SixDofConstraint_getTotalLambdaRotationZ
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SixDOFConstraint * const pConstraint
+            = reinterpret_cast<SixDOFConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaRotation().GetZ();
+    return result;
+}

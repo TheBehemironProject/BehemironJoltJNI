@@ -41,3 +41,16 @@ JNIEXPORT void JNICALL Java_com_github_stephengold_joltjni_GearConstraint_setCon
     const Constraint * const pHinge2 = reinterpret_cast<Constraint *> (hinge2Va);
     pGear->SetConstraints(pHinge1, pHinge2);
 }
+
+/*
+ * Class:     com_github_stephengold_joltjni_GearConstraint
+ * Method:    getTotalLambda
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_GearConstraint_getTotalLambda
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const GearConstraint * const pConstraint
+            = reinterpret_cast<GearConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambda();
+    return result;
+}

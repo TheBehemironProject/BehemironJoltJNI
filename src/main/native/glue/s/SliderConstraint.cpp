@@ -219,3 +219,81 @@ JNIEXPORT void JNICALL Java_com_github_stephengold_joltjni_SliderConstraint_setT
             = reinterpret_cast<SliderConstraint *> (constraintVa);
     pConstraint->SetTargetVelocity(velocity);
 }
+
+/*
+ * Class:     com_github_stephengold_joltjni_SliderConstraint
+ * Method:    getTotalLambdaPositionX
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SliderConstraint_getTotalLambdaPositionX
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SliderConstraint * const pConstraint
+            = reinterpret_cast<SliderConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPosition()[0];
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_SliderConstraint
+ * Method:    getTotalLambdaPositionY
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SliderConstraint_getTotalLambdaPositionY
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SliderConstraint * const pConstraint
+            = reinterpret_cast<SliderConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPosition()[1];
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_SliderConstraint
+ * Method:    getTotalLambdaPositionLimits
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SliderConstraint_getTotalLambdaPositionLimits
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SliderConstraint * const pConstraint
+            = reinterpret_cast<SliderConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaPositionLimits();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_SliderConstraint
+ * Method:    getTotalLambdaRotationX
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SliderConstraint_getTotalLambdaRotationX
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SliderConstraint * const pConstraint
+            = reinterpret_cast<SliderConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaRotation().GetX();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_SliderConstraint
+ * Method:    getTotalLambdaRotationY
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SliderConstraint_getTotalLambdaRotationY
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SliderConstraint * const pConstraint
+            = reinterpret_cast<SliderConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaRotation().GetY();
+    return result;
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_SliderConstraint
+ * Method:    getTotalLambdaRotationZ
+ * Signature: (J)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_github_stephengold_joltjni_SliderConstraint_getTotalLambdaRotationZ
+  (JNIEnv *, jclass, jlong constraintVa) {
+    const SliderConstraint * const pConstraint
+            = reinterpret_cast<SliderConstraint *> (constraintVa);
+    const float result = pConstraint->GetTotalLambdaRotation().GetZ();
+    return result;
+}
