@@ -88,6 +88,8 @@ public class BoundaryProfiler {
         final RVec3 storePos = new RVec3(0.0, 0.0, 0.0);
         final Quat storeRot = new Quat(0f, 0f, 0f, 1f);
 
+        verifyCombinedApi();
+
         report("read  per-body alloc ",
                 time(() -> {
                     double sink = 0.0;
@@ -116,6 +118,11 @@ public class BoundaryProfiler {
                     bodyInterface.getRotations(ids, rotBuf);
                     return posBuf.get(0) + rotBuf.get(3);
                 }));
+        report("read  batch pos+rot  ",
+                time(() -> {
+                    bodyInterface.getPositionsAndRotations(ids, posBuf, rotBuf);
+                    return posBuf.get(0) + rotBuf.get(3);
+                }));
         report("read  batch matrices",
                 time(() -> {
                     bodyInterface.getCenterOfMassTransforms(ids, matArray);
@@ -132,6 +139,12 @@ public class BoundaryProfiler {
         report("write batch positions",
                 time(() -> {
                     bodyInterface.setPositions(ids, posBuf,
+                            EActivation.DontActivate);
+                    return posBuf.get(0);
+                }));
+        report("write batch pos+rot  ",
+                time(() -> {
+                    bodyInterface.setPositionsAndRotations(ids, posBuf, rotBuf,
                             EActivation.DontActivate);
                     return posBuf.get(0);
                 }));
@@ -154,6 +167,54 @@ public class BoundaryProfiler {
         System.out.printf(
                 "PROFILE %s : %8.0f ns/round %7.1f ns/body %6.2f ms/tick %5.1f%% of 50ms%n",
                 label, nsPerRound, nsPerBody, msPerTick, pctOfTick);
+    }
+
+    // Correctness of the combined batch APIs against the per-body equivalents:
+    // exact equality expected (same getters underneath).
+    private static void verifyCombinedApi() {
+        final DoubleBuffer posBuf
+                = Jolt.newDirectDoubleBuffer(NUM_BODIES * 3);
+        final FloatBuffer rotBuf
+                = Jolt.newDirectFloatBuffer(NUM_BODIES * 4);
+
+        // write via the combined setter, read back per body
+        for (int i = 0; i < NUM_BODIES; ++i) {
+            posBuf.put(i * 3, 100.0 + i * 0.5);
+            posBuf.put(i * 3 + 1, 10.0);
+            posBuf.put(i * 3 + 2, -i * 0.25);
+            rotBuf.put(i * 4, 0f);
+            rotBuf.put(i * 4 + 1, 0f);
+            rotBuf.put(i * 4 + 2, 0f);
+            rotBuf.put(i * 4 + 3, 1f);
+        }
+        bodyInterface.setPositionsAndRotations(ids, posBuf, rotBuf,
+                EActivation.DontActivate);
+
+        final RVec3 storePos = new RVec3(0.0, 0.0, 0.0);
+        final Quat storeRot = new Quat(0f, 0f, 0f, 1f);
+        for (int i = 0; i < NUM_BODIES; ++i) {
+            bodyInterface.getPosition(ids.get(i), storePos);
+            bodyInterface.getRotation(ids.get(i), storeRot);
+            if (storePos.xx() != 100.0 + i * 0.5 || storePos.yy() != 10.0
+                    || storePos.zz() != -i * 0.25
+                    || storeRot.getW() != 1f) {
+                throw new AssertionError("combined setter mismatch at " + i);
+            }
+        }
+
+        // read via the combined getter, compare against per-body
+        bodyInterface.getPositionsAndRotations(ids, posBuf, rotBuf);
+        for (int i = 0; i < NUM_BODIES; ++i) {
+            bodyInterface.getPosition(ids.get(i), storePos);
+            bodyInterface.getRotation(ids.get(i), storeRot);
+            if (posBuf.get(i * 3) != storePos.xx()
+                    || posBuf.get(i * 3 + 1) != storePos.yy()
+                    || posBuf.get(i * 3 + 2) != storePos.zz()
+                    || rotBuf.get(i * 4 + 3) != storeRot.getW()) {
+                throw new AssertionError("combined getter mismatch at " + i);
+            }
+        }
+        System.out.println("PROFILE check combined APIs : PASS (" + NUM_BODIES + " bodies)");
     }
 
     private static double time(Sink sink) {

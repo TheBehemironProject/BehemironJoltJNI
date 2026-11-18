@@ -316,6 +316,34 @@ JNIEXPORT void JNICALL Java_com_github_stephengold_joltjni_BatchBodyInterface_ge
 
 /*
  * Class:     com_github_stephengold_joltjni_BatchBodyInterface
+ * Method:    getPositionsAndRotations
+ * Signature: (JJILjava/nio/DoubleBuffer;Ljava/nio/FloatBuffer;)V
+ */
+JNIEXPORT void JNICALL Java_com_github_stephengold_joltjni_BatchBodyInterface_getPositionsAndRotations
+  (JNIEnv *pEnv, jclass, jlong bodyInterfaceVa, jlong arrayVa, jint numBodies,
+  jobject storeLocations, jobject storeOrientations) {
+    const BodyInterface * const pInterface
+            = reinterpret_cast<BodyInterface *> (bodyInterfaceVa);
+    const BodyID * const pArray = reinterpret_cast<const BodyID *> (arrayVa);
+    DIRECT_DOUBLE_BUFFER(pEnv, storeLocations, pLocations, capLocations);
+    JPH_ASSERT(capLocations >= numBodies * 3);
+    DIRECT_FLOAT_BUFFER(pEnv, storeOrientations, pOrientations, capOrientations);
+    JPH_ASSERT(capOrientations >= numBodies * 4);
+    for (jlong i = 0; i < numBodies; ++i) {
+        const RVec3 location = pInterface->GetPosition(pArray[i]);
+        pLocations[i * 3 + 0] = location.GetX();
+        pLocations[i * 3 + 1] = location.GetY();
+        pLocations[i * 3 + 2] = location.GetZ();
+        const Quat orientation = pInterface->GetRotation(pArray[i]);
+        pOrientations[i * 4 + 0] = orientation.GetX();
+        pOrientations[i * 4 + 1] = orientation.GetY();
+        pOrientations[i * 4 + 2] = orientation.GetZ();
+        pOrientations[i * 4 + 3] = orientation.GetW();
+    }
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_BatchBodyInterface
  * Method:    getRestitutions
  * Signature: (JJILjava/nio/FloatBuffer;)V
  */
@@ -534,6 +562,33 @@ JNIEXPORT void JNICALL Java_com_github_stephengold_joltjni_BatchBodyInterface_se
     for (jlong i = 0; i < numBodies; ++i) {
         const RVec3 location(pIn[i * 3 + 0], pIn[i * 3 + 1], pIn[i * 3 + 2]);
         pInterface->SetPosition(pArray[i], location, eActivation);
+    }
+}
+
+/*
+ * Class:     com_github_stephengold_joltjni_BatchBodyInterface
+ * Method:    setPositionsAndRotations
+ * Signature: (JJILjava/nio/DoubleBuffer;Ljava/nio/FloatBuffer;I)V
+ */
+JNIEXPORT void JNICALL Java_com_github_stephengold_joltjni_BatchBodyInterface_setPositionsAndRotations
+  (JNIEnv *pEnv, jclass, jlong bodyInterfaceVa, jlong arrayVa, jint numBodies,
+  jobject locations, jobject orientations, jint activationOrdinal) {
+    BodyInterface * const pInterface
+            = reinterpret_cast<BodyInterface *> (bodyInterfaceVa);
+    const BodyID * const pArray = reinterpret_cast<const BodyID *> (arrayVa);
+    DIRECT_DOUBLE_BUFFER(pEnv, locations, pInLocations, capLocations);
+    JPH_ASSERT(capLocations >= numBodies * 3);
+    DIRECT_FLOAT_BUFFER(pEnv, orientations, pInOrientations, capOrientations);
+    JPH_ASSERT(capOrientations >= numBodies * 4);
+    const EActivation eActivation = (EActivation) activationOrdinal;
+    for (jlong i = 0; i < numBodies; ++i) {
+        const RVec3 location(pInLocations[i * 3 + 0],
+                pInLocations[i * 3 + 1], pInLocations[i * 3 + 2]);
+        const Quat orientation(pInOrientations[i * 4 + 0],
+                pInOrientations[i * 4 + 1], pInOrientations[i * 4 + 2],
+                pInOrientations[i * 4 + 3]);
+        pInterface->SetPositionAndRotation(
+                pArray[i], location, orientation, eActivation);
     }
 }
 

@@ -327,6 +327,28 @@ public class BatchBodyInterface extends BodyInterface {
     }
 
     /**
+     * Copy the locations and orientations of the specified bodies in one call.
+     *
+     * @param bodyIds the IDs of the bodies to query (not {@code null},
+     * unaffected)
+     * @param storeLocations storage for the locations (not {@code null},
+     * interleaved X,Y,Z, capacity&ge;3*numBodies, modified)
+     * @param storeOrientations storage for the orientations (not {@code null},
+     * interleaved X,Y,Z,W, capacity&ge;4*numBodies, modified)
+     */
+    public void getPositionsAndRotations(ConstBodyIdArray bodyIds,
+            DoubleBuffer storeLocations, FloatBuffer storeOrientations) {
+        int numBodies = bodyIds.length();
+        assert storeLocations.capacity() >= numBodies * 3;
+        assert storeOrientations.capacity() >= numBodies * 4;
+
+        long bodyInterfaceVa = va();
+        long arrayVa = bodyIds.targetVa();
+        getPositionsAndRotations(bodyInterfaceVa, arrayVa, numBodies,
+                storeLocations, storeOrientations);
+    }
+
+    /**
      * Return the restitution ratios of the specified bodies.
      *
      * @param bodyIds the IDs of the bodies to query (not {@code null},
@@ -533,6 +555,30 @@ public class BatchBodyInterface extends BodyInterface {
     }
 
     /**
+     * Relocate and reorient the specified bodies in one call.
+     *
+     * @param bodyIds the IDs of the bodies (not {@code null}, unaffected)
+     * @param locations the desired locations (not {@code null}, interleaved
+     * X,Y,Z, capacity&ge;3*numBodies, unaffected)
+     * @param orientations the desired orientations (not {@code null},
+     * interleaved X,Y,Z,W, capacity&ge;4*numBodies, unaffected)
+     * @param activation whether to activate the bodies (not {@code null})
+     */
+    public void setPositionsAndRotations(ConstBodyIdArray bodyIds,
+            DoubleBuffer locations, FloatBuffer orientations,
+            EActivation activation) {
+        int numBodies = bodyIds.length();
+        assert locations.capacity() >= numBodies * 3;
+        assert orientations.capacity() >= numBodies * 4;
+
+        long bodyInterfaceVa = va();
+        long arrayVa = bodyIds.targetVa();
+        int activationOrdinal = activation.ordinal();
+        setPositionsAndRotations(bodyInterfaceVa, arrayVa, numBodies,
+                locations, orientations, activationOrdinal);
+    }
+
+    /**
      * Alter the restitution ratios of the specified bodies.
      *
      * @param bodyIds the IDs of the bodies (not {@code null}, unaffected)
@@ -612,6 +658,10 @@ public class BatchBodyInterface extends BodyInterface {
     native private static void getPositions(long bodyInterfaceVa, long arrayVa,
             int numBodies, DoubleBuffer storeLocations);
 
+    native private static void getPositionsAndRotations(long bodyInterfaceVa,
+            long arrayVa, int numBodies, DoubleBuffer storeLocations,
+            FloatBuffer storeOrientations);
+
     native private static void getRestitutions(long bodyInterfaceVa,
             long arrayVa, int numBodies, FloatBuffer storeRestitutions);
 
@@ -647,6 +697,10 @@ public class BatchBodyInterface extends BodyInterface {
 
     native private static void setPositions(long bodyInterfaceVa, long arrayVa,
             int numBodies, DoubleBuffer locations, int activationOrdinal);
+
+    native private static void setPositionsAndRotations(long bodyInterfaceVa,
+            long arrayVa, int numBodies, DoubleBuffer locations,
+            FloatBuffer orientations, int activationOrdinal);
 
     native private static void setRestitutions(long bodyInterfaceVa,
             long arrayVa, int numBodies, FloatBuffer restitutions);
