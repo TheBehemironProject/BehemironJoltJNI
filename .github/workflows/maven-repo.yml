@@ -95,17 +95,16 @@ jobs:
           if-no-files-found: error
 
   android:
-    # Upstream's Android build is a separate Gradle script (android.gradle) driving AGP +
-    # ndk-build (Android.mk). It produces a multi-ABI AAR; we stage it as classifier `android`.
-    # setup-android installs cmdline-tools, accepts SDK licenses and the pinned NDK
-    # (android-ndk from gradle/libs.versions.toml) — a bare `sdkmanager --install` fails
-    # on non-interactive stdin when a license needs accepting.
-    runs-on: ubuntu-22.04
+    # Mirrors upstream's Java21-x-Android job: JDK 21, prepare the unpacked Jolt sources
+    # with the default build file, then replace build.gradle with android.gradle and run
+    # AGP. `-b android.gradle` does not work with AGP (the plugin needs the standard build
+    # file). setup-android accepts the SDK licenses and installs the pinned NDK.
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/setup-java@v6
         with:
-          distribution: 'temurin'
-          java-version: 17
+          distribution: 'zulu'
+          java-version: 21
       - uses: actions/checkout@v7
       - uses: gradle/actions/setup-gradle@v6
       - name: Set up Android SDK + NDK
@@ -113,8 +112,13 @@ jobs:
         with:
           packages: 'ndk;30.0.16248370'
           accept-android-sdk-licenses: true
+      - name: Prepare native sources
+        run: ./gradlew classes unpackJoltSource unpackTestFramework unpackVhacdSource --console=plain
+        shell: bash
       - name: Build Android AAR
-        run: ./gradlew -b android.gradle -Partifact=behemiron-jolt-jni-Android assembleRelease --console=plain
+        run: |
+          cp android.gradle build.gradle
+          ./gradlew -Partifact=behemiron-jolt-jni-Android -Pflavor=Sp assembleRelease --console=plain
         shell: bash
       - name: Repackage per-ABI runtime natives jars
         # FCL/Pojav run the full Java Edition JVM on Android, so the consumer of these is a
