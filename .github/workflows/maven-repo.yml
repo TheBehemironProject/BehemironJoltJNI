@@ -116,10 +116,33 @@ jobs:
       - name: Build Android AAR
         run: ./gradlew -b android.gradle -Partifact=behemiron-jolt-jni-Android assembleRelease --console=plain
         shell: bash
+      - name: Repackage per-ABI runtime natives jars
+        # FCL/Pojav run the full Java Edition JVM on Android, so the consumer of these is a
+        # JVM classpath (our Loader extracts by resource path), not an Android app module.
+        # Crack the AAR and lay each ABI's libjoltjni.so out like the desktop natives jars:
+        #   android/<abi>/com/github/stephengold/libjoltjni.so
+        run: |
+          set -euo pipefail
+          project_version="$(sed -n 's/^jjVersion = \(.*\)/\1/p' gradle.properties | head -n 1)"
+          aar="$(find build/outputs/aar -name '*.aar' | head -n 1)"
+          rm -rf aar-out repack && mkdir -p aar-out repack
+          unzip -q "$aar" -d aar-out
+          for abi in arm64-v8a armeabi-v7a x86_64; do
+            so="aar-out/jni/${abi}/libjoltjni.so"
+            [[ -f "$so" ]] || continue
+            staging="repack/${abi}/android/${abi}/com/github/stephengold"
+            mkdir -p "$staging"
+            cp "$so" "$staging/"
+            (cd "repack/${abi}" && jar cf "../../behemiron-jolt-jni-${project_version}-android-${abi}.jar" .)
+          done
+          ls -la behemiron-jolt-jni-*.jar
+        shell: bash
       - uses: actions/upload-artifact@v4
         with:
           name: maven-android
-          path: build/outputs/aar/*.aar
+          path: |
+            build/outputs/aar/*.aar
+            behemiron-jolt-jni-*-android-*.jar
           if-no-files-found: error
 
   deploy-maven-repo:
@@ -197,7 +220,9 @@ jobs:
           linux_jar="$(find prebuilt-artifacts -path '*maven-base*' -name '*-ReleaseSp.jar' | head -n 1)"
           mvn "${deploy_file_args[@]}" -Dfile="$linux_jar" -Dclassifier=linux-x86_64
 
-          # Android: multi-ABI AAR from the android job (classifier `android`, packaging aar).
+          # Android: multi-ABI AAR (classifier `android`, packaging aar) for app-module
+          # consumers, plus per-ABI runtime natives jars (classifier android-<abi>) for the
+          # JVM classpath path (FCL/Pojav).
           aar="$(find prebuilt-artifacts -path '*maven-android*' -name '*.aar' | head -n 1)"
           if [[ ! -f "$aar" ]]; then
             echo "Android AAR not found"
@@ -205,6 +230,10 @@ jobs:
             exit 1
           fi
           mvn "${deploy_file_args[@]}" -Dfile="$aar" -Dclassifier=android -Dpackaging=aar
+          for abi_jar in $(find prebuilt-artifacts -path '*maven-android*' -name '*-android-*.jar' | sort); do
+            abi_classifier="$(basename "$abi_jar" | sed -E "s/behemiron-jolt-jni-${project_version}-android-(.*)\.jar/\1/")"
+            mvn "${deploy_file_args[@]}" -Dfile="$abi_jar" -Dclassifier="android-${abi_classifier}"
+          done
 
           echo "Staged Maven repository layout:"
           (cd "$repo_out" && find . -type f | sort)
