@@ -170,7 +170,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           pattern: maven-*
-          merge-multiple: true
+          # NO merge-multiple: every platform produces the same ReleaseSp jar
+          # filename, so flattening them would overwrite one another and the
+          # per-platform find patterns below could never match. Keep one
+          # subdirectory per artifact (maven-base/, maven-windows-x86_64/, ...).
           path: prebuilt-artifacts
 
       - name: Resolve project version
