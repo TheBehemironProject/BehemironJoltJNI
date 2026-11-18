@@ -81,26 +81,29 @@ public class DistanceConstraint extends TwoBodyConstraint {
         return result;
     }
 
-    /**
-     * Alter the limits.
-     *
-     * @param min the desired lower limit (in meters)
-     * @param max the desired upper limit (in meters)
-     */
     // *************************************************************************
     // new methods exposed
 
     /**
-     * Return the total lambda of the Position part. The constraint is unaffected.
+     * Return the total lambda of the Position part.
+     * The constraint is unaffected.
      *
      * @return the total lambda
      */
+
     public float getTotalLambdaPosition() {
         long constraintVa = va();
         float result = getTotalLambdaPosition(constraintVa);
 
         return result;
     }
+
+    /**
+     * Alter the limits.
+     *
+     * @param min the desired lower limit (in meters)
+     * @param max the desired upper limit (in meters)
+     */
     public void setDistance(float min, float max) {
         long constraintVa = va();
         setDistance(constraintVa, min, max);
@@ -113,9 +116,6 @@ public class DistanceConstraint extends TwoBodyConstraint {
     native private static float getMaxDistance(long constraintVa);
 
     native private static float getMinDistance(long constraintVa);
-
-    // *************************************************************************
-    // native private methods
 
     native private static float getTotalLambdaPosition(long constraintVa);
 

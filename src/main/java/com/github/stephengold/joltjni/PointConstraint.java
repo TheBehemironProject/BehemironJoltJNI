@@ -40,14 +40,17 @@ public class PointConstraint extends TwoBodyConstraint {
     PointConstraint(long constraintVa) {
         setVirtualAddressAsCoOwner(constraintVa);
     }
+
     // *************************************************************************
     // new methods exposed
 
     /**
-     * Copy the total lambda of the Position part. The constraint is unaffected.
+     * Copy the total lambda of the Position part.
+     * The constraint is unaffected.
      *
      * @return a new vector
      */
+
     public Vec3 getTotalLambdaPosition() {
         long constraintVa = va();
         float x = getTotalLambdaPositionX(constraintVa);
@@ -57,7 +60,6 @@ public class PointConstraint extends TwoBodyConstraint {
 
         return result;
     }
-
 
     // *************************************************************************
     // native private methods

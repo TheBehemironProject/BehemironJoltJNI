@@ -45,10 +45,12 @@ public class FixedConstraint extends TwoBodyConstraint {
     // new methods exposed
 
     /**
-     * Copy the total lambda of the position part. The constraint is unaffected.
+     * Copy the total lambda of the Position part.
+     * The constraint is unaffected.
      *
      * @return a new vector
      */
+
     public Vec3 getTotalLambdaPosition() {
         long constraintVa = va();
         float x = getTotalLambdaPositionX(constraintVa);
@@ -60,10 +62,12 @@ public class FixedConstraint extends TwoBodyConstraint {
     }
 
     /**
-     * Copy the total lambda of the rotation part. The constraint is unaffected.
+     * Copy the total lambda of the Rotation part.
+     * The constraint is unaffected.
      *
      * @return a new vector
      */
+
     public Vec3 getTotalLambdaRotation() {
         long constraintVa = va();
         float x = getTotalLambdaRotationX(constraintVa);
@@ -88,4 +92,5 @@ public class FixedConstraint extends TwoBodyConstraint {
     native private static float getTotalLambdaRotationY(long constraintVa);
 
     native private static float getTotalLambdaRotationZ(long constraintVa);
+
 }

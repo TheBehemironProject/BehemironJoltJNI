@@ -45,6 +45,23 @@ public class RackAndPinionConstraint extends TwoBodyConstraint {
     // *************************************************************************
     // new public methods
 
+    // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Return the total lambda.
+     * The constraint is unaffected.
+     *
+     * @return the total lambda
+     */
+
+    public float getTotalLambda() {
+        long constraintVa = va();
+        float result = getTotalLambda(constraintVa);
+
+        return result;
+    }
+
     /**
      * Specify the constraints for each body (optional).
      *
@@ -53,29 +70,12 @@ public class RackAndPinionConstraint extends TwoBodyConstraint {
      * @param rack the desired slider constraint for the rack (not {@code null},
      * unaffected)
      */
-    // *************************************************************************
-    // new methods exposed
-
-    /**
-     * Return the total lambda. The constraint is unaffected.
-     *
-     * @return the total lambda
-     */
-    public float getTotalLambda() {
-        long constraintVa = va();
-        float result = getTotalLambda(constraintVa);
-
-        return result;
-    }
     public void setConstraints(ConstConstraint pinion, ConstConstraint rack) {
         long randpVa = va();
         long pinionVa = pinion.targetVa();
         long rackVa = rack.targetVa();
         setConstraints(randpVa, pinionVa, rackVa);
     }
-    // *************************************************************************
-    // native private methods
-
     // *************************************************************************
     // native private methods
 

@@ -420,20 +420,16 @@ public class SixDofConstraint extends TwoBodyConstraint {
         return result;
     }
 
-    /**
-     * Alter the spring settings of the specified degree of freedom.
-     *
-     * @param dof which DOF to alter (not {@code null})
-     * @param springSettings the desired settings (not {@code null}, unaffected)
-     */
     // *************************************************************************
     // new methods exposed
 
     /**
-     * Copy the total lambda of the Position part. The constraint is unaffected.
+     * Copy the total lambda of the Position part.
+     * The constraint is unaffected.
      *
      * @return a new vector
      */
+
     public Vec3 getTotalLambdaPosition() {
         long constraintVa = va();
         float x = getTotalLambdaPositionX(constraintVa);
@@ -444,14 +440,13 @@ public class SixDofConstraint extends TwoBodyConstraint {
         return result;
     }
 
-    // *************************************************************************
-    // new methods exposed
-
     /**
-     * Copy the total lambda of the Rotation part. The constraint is unaffected.
+     * Copy the total lambda of the Rotation part.
+     * The constraint is unaffected.
      *
      * @return a new vector
      */
+
     public Vec3 getTotalLambdaRotation() {
         long constraintVa = va();
         float x = getTotalLambdaRotationX(constraintVa);
@@ -461,6 +456,13 @@ public class SixDofConstraint extends TwoBodyConstraint {
 
         return result;
     }
+
+    /**
+     * Alter the spring settings of the specified degree of freedom.
+     *
+     * @param dof which DOF to alter (not {@code null})
+     * @param springSettings the desired settings (not {@code null}, unaffected)
+     */
     public void setLimitsSpringSettings(
             EAxis dof, ConstSpringSettings springSettings) {
         long constraintVa = va();
@@ -756,9 +758,6 @@ public class SixDofConstraint extends TwoBodyConstraint {
     native private static boolean isFixedAxis(long constraintVa, int dofIndex);
 
     native private static boolean isFreeAxis(long constraintVa, int dofIndex);
-
-    // *************************************************************************
-    // native private methods
 
     native private static float getTotalLambdaPositionX(long constraintVa);
 

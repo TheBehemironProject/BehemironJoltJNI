@@ -45,6 +45,23 @@ public class GearConstraint extends TwoBodyConstraint {
     // *************************************************************************
     // new methods exposed
 
+    // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Return the total lambda.
+     * The constraint is unaffected.
+     *
+     * @return the total lambda
+     */
+
+    public float getTotalLambda() {
+        long constraintVa = va();
+        float result = getTotalLambda(constraintVa);
+
+        return result;
+    }
+
     /**
      * Specify the hinge constraints for each gear (optional).
      *
@@ -53,29 +70,12 @@ public class GearConstraint extends TwoBodyConstraint {
      * @param hinge2 the desired hinge constraint for the 2nd gear (not
      * {@code null}, unaffected)
      */
-    // *************************************************************************
-    // new methods exposed
-
-    /**
-     * Return the total lambda. The constraint is unaffected.
-     *
-     * @return the total lambda
-     */
-    public float getTotalLambda() {
-        long constraintVa = va();
-        float result = getTotalLambda(constraintVa);
-
-        return result;
-    }
     public void setConstraints(ConstConstraint hinge1, ConstConstraint hinge2) {
         long gearVa = va();
         long hinge1Va = hinge1.targetVa();
         long hinge2Va = hinge2.targetVa();
         setConstraints(gearVa, hinge1Va, hinge2Va);
     }
-    // *************************************************************************
-    // native private methods
-
     // *************************************************************************
     // native private methods
 

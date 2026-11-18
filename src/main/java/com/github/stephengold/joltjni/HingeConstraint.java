@@ -171,20 +171,16 @@ public class HingeConstraint extends TwoBodyConstraint {
         return result;
     }
 
-    /**
-     * Alter the limits.
-     *
-     * @param min the desired lower limit (in radians)
-     * @param max the desired upper limit (in radians)
-     */
     // *************************************************************************
     // new methods exposed
 
     /**
-     * Copy the total lambda of the Position part. The constraint is unaffected.
+     * Copy the total lambda of the Position part.
+     * The constraint is unaffected.
      *
      * @return a new vector
      */
+
     public Vec3 getTotalLambdaPosition() {
         long constraintVa = va();
         float x = getTotalLambdaPositionX(constraintVa);
@@ -195,15 +191,13 @@ public class HingeConstraint extends TwoBodyConstraint {
         return result;
     }
 
-    // *************************************************************************
-    // new methods exposed
-
     /**
      * Return the X component of the total lambda of the Rotation part.
      * The constraint is unaffected.
      *
      * @return the X component
      */
+
     public float getTotalLambdaRotationX() {
         long constraintVa = va();
         float result = getTotalLambdaRotationX(constraintVa);
@@ -217,6 +211,7 @@ public class HingeConstraint extends TwoBodyConstraint {
      *
      * @return the Y component
      */
+
     public float getTotalLambdaRotationY() {
         long constraintVa = va();
         float result = getTotalLambdaRotationY(constraintVa);
@@ -224,20 +219,26 @@ public class HingeConstraint extends TwoBodyConstraint {
         return result;
     }
 
-    // *************************************************************************
-    // new methods exposed
-
     /**
-     * Return the total lambda of the RotationLimits part. The constraint is unaffected.
+     * Return the total lambda of the RotationLimits part.
+     * The constraint is unaffected.
      *
      * @return the total lambda
      */
+
     public float getTotalLambdaRotationLimits() {
         long constraintVa = va();
         float result = getTotalLambdaRotationLimits(constraintVa);
 
         return result;
     }
+
+    /**
+     * Alter the limits.
+     *
+     * @param min the desired lower limit (in radians)
+     * @param max the desired upper limit (in radians)
+     */
     public void setLimits(float min, float max) {
         long constraintVa = va();
         setLimits(constraintVa, min, max);
@@ -305,9 +306,6 @@ public class HingeConstraint extends TwoBodyConstraint {
     native private static float getTargetAngularVelocity(long constraintVa);
 
     native private static boolean hasLimits(long constraintVa);
-
-    // *************************************************************************
-    // native private methods
 
     native private static float getTotalLambdaPositionX(long constraintVa);
 

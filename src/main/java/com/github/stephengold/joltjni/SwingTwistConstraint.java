@@ -129,19 +129,16 @@ public class SwingTwistConstraint extends TwoBodyConstraint {
         return result;
     }
 
-    /**
-     * Alter the maximum friction torque when not driven by a motor.
-     *
-     * @param torque the desired limit (in Newton meters)
-     */
     // *************************************************************************
     // new methods exposed
 
     /**
-     * Copy the total lambda of the Position part. The constraint is unaffected.
+     * Copy the total lambda of the Position part.
+     * The constraint is unaffected.
      *
      * @return a new vector
      */
+
     public Vec3 getTotalLambdaPosition() {
         long constraintVa = va();
         float x = getTotalLambdaPositionX(constraintVa);
@@ -152,14 +149,13 @@ public class SwingTwistConstraint extends TwoBodyConstraint {
         return result;
     }
 
-    // *************************************************************************
-    // new methods exposed
-
     /**
-     * Return the total lambda of the Twist part. The constraint is unaffected.
+     * Return the total lambda of the Twist part.
+     * The constraint is unaffected.
      *
      * @return the total lambda
      */
+
     public float getTotalLambdaTwist() {
         long constraintVa = va();
         float result = getTotalLambdaTwist(constraintVa);
@@ -167,14 +163,13 @@ public class SwingTwistConstraint extends TwoBodyConstraint {
         return result;
     }
 
-    // *************************************************************************
-    // new methods exposed
-
     /**
-     * Return the total lambda of the SwingY part. The constraint is unaffected.
+     * Return the total lambda of the SwingY part.
+     * The constraint is unaffected.
      *
      * @return the total lambda
      */
+
     public float getTotalLambdaSwingY() {
         long constraintVa = va();
         float result = getTotalLambdaSwingY(constraintVa);
@@ -182,20 +177,25 @@ public class SwingTwistConstraint extends TwoBodyConstraint {
         return result;
     }
 
-    // *************************************************************************
-    // new methods exposed
-
     /**
-     * Return the total lambda of the SwingZ part. The constraint is unaffected.
+     * Return the total lambda of the SwingZ part.
+     * The constraint is unaffected.
      *
      * @return the total lambda
      */
+
     public float getTotalLambdaSwingZ() {
         long constraintVa = va();
         float result = getTotalLambdaSwingZ(constraintVa);
 
         return result;
     }
+
+    /**
+     * Alter the maximum friction torque when not driven by a motor.
+     *
+     * @param torque the desired limit (in Newton meters)
+     */
     public void setMaxFrictionTorque(float torque) {
         long settingsVa = va();
         setMaxFrictionTorque(settingsVa, torque);
@@ -308,9 +308,6 @@ public class SwingTwistConstraint extends TwoBodyConstraint {
     native private static long getTwistMotorSettings(long constraintVa);
 
     native private static int getTwistMotorState(long constraintVa);
-
-    // *************************************************************************
-    // native private methods
 
     native private static float getTotalLambdaPositionX(long constraintVa);
 
