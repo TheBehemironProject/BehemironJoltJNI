@@ -45,18 +45,14 @@ public class PulleyConstraint extends TwoBodyConstraint {
     // new methods exposed
 
     /**
-     * Copy the total lambda of the Position part.
+     * Return the total lambda of the Position part.
      * The constraint is unaffected.
      *
-     * @return a new vector
+     * @return the total lambda
      */
-
-    public Vec3 getTotalLambdaPosition() {
+    public float getTotalLambdaPosition() {
         long constraintVa = va();
-        float x = getTotalLambdaPositionX(constraintVa);
-        float y = getTotalLambdaPositionY(constraintVa);
-        float z = getTotalLambdaPositionZ(constraintVa);
-        Vec3 result = new Vec3(x, y, z);
+        float result = getTotalLambdaPosition(constraintVa);
 
         return result;
     }
@@ -64,10 +60,6 @@ public class PulleyConstraint extends TwoBodyConstraint {
     // *************************************************************************
     // native private methods
 
-    native private static float getTotalLambdaPositionX(long constraintVa);
-
-    native private static float getTotalLambdaPositionY(long constraintVa);
-
-    native private static float getTotalLambdaPositionZ(long constraintVa);
+    native private static float getTotalLambdaPosition(long constraintVa);
 
 }

@@ -119,7 +119,14 @@ model {
             }
         }
 
-        visualCpp(VisualCpp)
+        visualCpp(VisualCpp) {
+            // fork: Gradle cannot locate VS 2026 on this machine (vswhere -requires
+            // does not report the VCTools component though cl.exe is installed), so
+            // allow pinning the installation explicitly: -PvsDir=E:/VS/18/Community
+            if (project.hasProperty('vsDir')) {
+                installDir = file(project.property('vsDir'))
+            }
+        }
         clang(Clang)
         gcc(Gcc)
         gcc11Arm32hf(Gcc) { // cross-compile on Linux
