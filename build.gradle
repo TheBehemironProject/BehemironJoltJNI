@@ -24,7 +24,7 @@ ext {
     downloadedVhacdZip = 'downloads/v-hacd-4.1.0.zip'
 
     baseName = "${artifact}-${jjVersion}" // for artifacts
-    groupID = 'com.github.stephengold'
+    groupID = 'com.behemiron.engine'
     staNumSteps = '1' // number of simulation steps (passed to SmokeTestAll)
     websiteUrl = 'https://github.com/stephengold/jolt-jni'
 }

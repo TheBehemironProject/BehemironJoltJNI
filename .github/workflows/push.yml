@@ -2,7 +2,7 @@
 # GitHub Actions workflow for commits pushed to the jolt-jni repo - all branches
 
 name: CI at GitHub
-on: [push]
+on: workflow_dispatch # fork: upstream CI needs signing secrets we do not carry; our publish flow lives in maven-repo.yml
 
 jobs:
   Java17-Windows64:

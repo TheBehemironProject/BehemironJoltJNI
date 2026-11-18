@@ -1,5 +1,18 @@
 # Jolt JNI
 
+> **Behemiron fork** — frozen baseline: upstream tag `7.0.0`, branch `behemiron`.
+> Maven coordinates: `com.behemiron.engine:behemiron-jolt-jni` (see `gradle.properties`).
+> Releases publish to this repo's `maven-repo` branch (`.github/workflows/maven-repo.yml`),
+> consumed by the Behemiron engine builds as a git-based Maven repository.
+> Upstream is kept as the `upstream` remote; we cherry-pick, never rebase.
+>
+> Fork roadmap (delta vs upstream):
+> 1. Real native Loader (versioned extraction + `System.load`, dedicated-server safe — no LWJGL)
+> 2. Glue completion as the engine hits gaps (first: `GetTotalLambda*` for Fixed/Pulley/Gear/RackAndPinion)
+> 3. Profiling-driven batch APIs at the JNI boundary (the SoA/batched read-write design is
+>    decided from measured hotspots, not guessed)
+> 4. Target runtime: NeoForge (MC 1.21.11 / 26.3 line), Java 21
+
 [The Jolt-JNI Project][project] provides
 [JVM] bindings for [Jolt Physics][jolt]
 and [Khaled Mamou's V-HACD Library][vhacd],
